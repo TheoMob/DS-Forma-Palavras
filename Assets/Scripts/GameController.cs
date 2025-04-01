@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 public class GameController : MonoBehaviour
 {
     public static GameController instance;
+    public SessionData Session = new SessionData();
     public int LettersCount = 0;
     public int WordsCount = 0;
     public int AmountOfLives = 3;
@@ -69,7 +70,7 @@ public class GameController : MonoBehaviour
     public void OnMatchLetter()
     {
         LettersCount--;
-
+        //Session.CsvCheck();
         if (LettersCount <= 0)
         {
             GameObject.FindWithTag("WinPanel").transform.GetChild(0).gameObject.SetActive(true);

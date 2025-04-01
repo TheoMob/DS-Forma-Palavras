@@ -17,8 +17,14 @@ public class SessionData : MonoBehaviour
     public float sessionTime;
     public int lostLives = 0;
     public int numClues = 0;
-    private string head = "ID, Data, Duração da Sessão, Profissional Responsável, ID do Paciente, Nome do nível,\n Tempo gasto no nível, Dicas Usadas, Nivel finalizado, Vidas Perdidas, Comentario do Profissional";
-
+    public string nameResp;
+    void Update()
+    {
+        //if (Input.GetKeyDown(KeyCode.Space)) 
+        //{
+        //    CsvCheck();
+        //}
+    }
     public void ResetSessionData()
     {
         this.lostLives = 0;
@@ -36,7 +42,6 @@ public class SessionData : MonoBehaviour
         this.lostLives++;
         return;
     }
-    
     public void GetPath()
     {
         string appPath = System.IO.Directory.GetCurrentDirectory();
@@ -46,15 +51,16 @@ public class SessionData : MonoBehaviour
     public void CsvCheck()
     {
         GetPath();
-        StreamWriter writer = new StreamWriter("/Dados.csv", true);
-        if (new FileInfo("/Dados.csv").Length == 0)
+        StreamWriter writer = new StreamWriter(this.filePath, true);
+        if (new FileInfo(this.filePath).Length == 0)
         {
             writer.WriteLine("ID, Data, Duração da Sessão, Profissional Responsável, ID do Paciente, Nome do nível,\n Tempo gasto no nível, Dicas Usadas, Nivel finalizado, Vidas Perdidas, Comentario do Profissional");
         }
         writer.Close();
+        Debug.Log($"Dados salvos em: {this.filePath} por check");
         return;
     }
-    public void saveData(float sessionTime, string nameResp, string paciID, int level, float spentTime, int nivelEnd, string commentary)
+    public void saveData(float sessionTime, string paciID, int level, float spentTime, int nivelEnd, string commentary)
     {
         DateTime dt = DateTime.Now;
         string date = dt.ToString("yyyyMMddHHmmss");
@@ -65,8 +71,8 @@ public class SessionData : MonoBehaviour
 
     public void WriteToCSV(string data)
     {
-       StreamWriter writer = new StreamWriter(this.filePath, true);
-            writer.WriteLine(data);
+        StreamWriter writer = new StreamWriter(this.filePath, true);
+        writer.WriteLine(data);
         writer.Close();
         Debug.Log($"Dados salvos em: {this.filePath}");
 
