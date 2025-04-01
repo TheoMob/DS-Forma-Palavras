@@ -21,12 +21,8 @@ public class InGameMenu : MonoBehaviour
 
     public void ExitApp()
     {
+        GameSessionLogger.instance.OnApplicationQuit();
         // Fecha o aplicativo no Android
         Application.Quit();
-
-        // Para garantir o encerramento no Android
-        #if UNITY_ANDROID
-        System.Diagnostics.Process.GetCurrentProcess().Kill();
-        #endif
     }
 }

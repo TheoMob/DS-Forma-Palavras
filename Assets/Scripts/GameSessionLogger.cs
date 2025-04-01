@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using UnityEngine.Android;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -38,6 +39,8 @@ public class GameSessionLogger : MonoBehaviour
 
     void Start()
     {
+        RequestPermissions();
+
         // Define o caminho do arquivo CSV
         filePath = Path.Combine(Application.persistentDataPath, "session_log.csv");
 
@@ -52,6 +55,16 @@ public class GameSessionLogger : MonoBehaviour
         BeginTimeStamp = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
     }
 
+    #if UNITY_ANDROID
+    void RequestPermissions()
+    {
+        if (!Permission.HasUserAuthorizedPermission(Permission.ExternalStorageWrite))
+        {
+            Permission.RequestUserPermission(Permission.ExternalStorageWrite);
+        }
+    }
+    #endif
+
     public void LogLevelData(string levelName, float timeSpent, int livesLost, int hintsUsed, bool levelCompleted, int amountOfLoses)
     {
         Debug.Log("Atualizando LogLevelData");
@@ -62,7 +75,7 @@ public class GameSessionLogger : MonoBehaviour
         levelDataList.Add(levelData);
     }
 
-    private void OnApplicationQuit()
+    public void OnApplicationQuit()
     {
         if (SceneManager.GetActiveScene().name.Contains("Level")) // significa que tava no meio de um level
             GameController.instance.UpdateSessionLogger();
