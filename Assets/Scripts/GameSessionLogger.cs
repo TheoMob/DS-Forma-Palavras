@@ -17,7 +17,7 @@ public class GameSessionLogger : MonoBehaviour
     public string EndTimeStamp;
     public float SessionDuration;
     public string AdminID;
-    public string PacientID;
+    public string PatientID;
     public int CompletedLevels;
 
     [Header("Variáveis qualitativas")]
@@ -88,7 +88,7 @@ public class GameSessionLogger : MonoBehaviour
         string levelsData = string.Join(" ; ", levelDataList);
 
         // Cria a linha da sessão
-        string sessionData = $"{SessionId}, {BeginTimeStamp}, {EndTimeStamp}, {SessionDuration}, {AdminID}, {PacientID}, {CompletedLevels}, \"{levelsData}\", {Commentary}\n";
+        string sessionData = $"{SessionId}, {BeginTimeStamp}, {EndTimeStamp}, {SessionDuration}, {AdminID}, {PatientID}, {CompletedLevels}, \"{levelsData}\", {Commentary}\n";
 
         // Salva no arquivo CSV
         File.AppendAllText(filePath, sessionData);

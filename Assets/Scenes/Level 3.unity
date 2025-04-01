@@ -736,10 +736,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Voltar ao Menu
+  m_text: Tentar novamente
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a7969f9e188f67d4b8d9149cb913d49d, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 894469376403027426, guid: a7969f9e188f67d4b8d9149cb913d49d, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -763,7 +763,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 82.3
+  m_fontSize: 74.15
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -3492,7 +3492,7 @@ MonoBehaviour:
   m_text: "Voc\xEA perdeu"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a7969f9e188f67d4b8d9149cb913d49d, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 894469376403027426, guid: a7969f9e188f67d4b8d9149cb913d49d, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3516,7 +3516,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 159.8
+  m_fontSize: 142.8
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1

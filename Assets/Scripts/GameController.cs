@@ -21,6 +21,8 @@ public class GameController : MonoBehaviour
 
     private string _lastLevelname;
 
+    public bool FirstTimeOnMainMenu = true;
+
     
     [Header("Sons")]
     [SerializeField] private AudioClip[] _VictorySound;
@@ -72,7 +74,10 @@ public class GameController : MonoBehaviour
         bool returningToMenu = IsInLevel && !scene.name.Contains("Level"); // isso testa se o jogador ta indo pro menu principal
 
         if (returningToMenu)
+        {
             UpdateSessionLogger();
+            FirstTimeOnMainMenu = false;
+        }
 
         IsInLevel = scene.name.Contains("Level");
         _lastLevelname = scene.name;
