@@ -413,7 +413,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 88889184}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 739083476}
+        m_TargetAssemblyTypeName: InGameMenu, Assembly-CSharp
+        m_MethodName: ExitApp
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &88889184
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1178,6 +1190,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &461503368 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3839696190710925788, guid: 0fefc181180614a498dc4ecf3c307822, type: 3}
+  m_PrefabInstance: {fileID: 1592155487}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &488721636
 GameObject:
   m_ObjectHideFlags: 0
@@ -1406,6 +1423,7 @@ GameObject:
   - component: {fileID: 739083473}
   - component: {fileID: 739083475}
   - component: {fileID: 739083474}
+  - component: {fileID: 739083476}
   m_Layer: 5
   m_Name: MainMenuTab
   m_TagString: Untagged
@@ -1472,6 +1490,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 739083472}
   m_CullTransparentMesh: 1
+--- !u!114 &739083476
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 739083472}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37d72072ea165ce43ab94a182244d112, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &744229033
 GameObject:
   m_ObjectHideFlags: 0
@@ -2158,12 +2188,35 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4609303681989205401, guid: 0fefc181180614a498dc4ecf3c307822, type: 3}
   m_PrefabInstance: {fileID: 1592155487}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 461503368}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 67e398c94d2496e4cbce97bc0ede1e29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &858964835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 461503368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 314188c3c0448aa47ad647447a98db85, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SessionId: 
+  BeginTimeStamp: 
+  EndTimeStamp: 
+  SessionDuration: 0
+  AdminID: 
+  PacientID: 
+  CompletedLevels: 0
+  LivesLost: 0
+  HintsUsed: 0
+  AmountOfLosses: 0
+  Commentary: 
 --- !u!1 &879535054
 GameObject:
   m_ObjectHideFlags: 0
@@ -2913,7 +2966,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3839696190710925788, guid: 0fefc181180614a498dc4ecf3c307822, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 858964835}
   m_SourcePrefab: {fileID: 100100000, guid: 0fefc181180614a498dc4ecf3c307822, type: 3}
 --- !u!1 &1612906183
 GameObject:

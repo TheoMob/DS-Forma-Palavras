@@ -74,12 +74,17 @@ public class HintManager : MonoBehaviour
                     _currentHintIndex = _tempoParaDicas.Length - 1;
 
                 _hintTimer = _tempoParaDicas[_currentHintIndex];
+
+                GameSessionLogger.instance.HintsUsed++; // registra quando uma hint é usada
             }
         }
     }
 
     public void GetLetterBlocksAndContainers()
     {
+        LetterBlocks = new List<LetterBlock>();
+        LetterContainers = new List<LetterContainer>();
+
         foreach(Transform child in GameObject.FindWithTag("LetterBlockMaster").transform)
         {
             if (child.CompareTag("LetterBlock"))

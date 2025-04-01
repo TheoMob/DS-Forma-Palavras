@@ -5290,7 +5290,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1511993760}
         m_TargetAssemblyTypeName: InGameMenu, Assembly-CSharp
-        m_MethodName: ReturnToMenu
+        m_MethodName: ResetScene
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

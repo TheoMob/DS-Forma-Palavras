@@ -17,6 +17,10 @@ public class GameController : MonoBehaviour
 
     public bool IsInLevel = false;
 
+    private bool _levelCompleted = false;
+
+    private string _lastLevelname;
+
     
     [Header("Sons")]
     [SerializeField] private AudioClip[] _VictorySound;
@@ -65,12 +69,19 @@ public class GameController : MonoBehaviour
 
     public void OnSceneLoaded(Scene scene, LoadSceneMode sceneMode)
     {
+        bool returningToMenu = IsInLevel && !scene.name.Contains("Level"); // isso testa se o jogador ta indo pro menu principal
+
+        if (returningToMenu)
+            UpdateSessionLogger();
+
         IsInLevel = scene.name.Contains("Level");
+        _lastLevelname = scene.name;
         GamePaused = false;
 
         if (!scene.name.Contains("Level")) // se não tem level no nome da cena, não é um level, logo não precisa do hint manager
             return;
 
+        HintManager.instance.GetLetterBlocksAndContainers();
         ResetLevelVariables();
         GetAmountOfLetters();
 
@@ -96,6 +107,8 @@ public class GameController : MonoBehaviour
 
         if (LettersCount <= 0)
         {
+            _levelCompleted = true;
+
             GameObject.FindWithTag("WinPanel").transform.GetChild(0).gameObject.SetActive(true);
             SoundFXManager.instance.PlaySoundFXClip(_VictorySound, transform.position, 1f, false);
 
@@ -112,6 +125,8 @@ public class GameController : MonoBehaviour
         // aqui da pra capturar a quantidade de erros e quantidade de vezes que a letra foi solta
         AmountOfLives--;
 
+        GameSessionLogger.instance.LivesLost++;
+
         if (_livesText == null)
             _livesText = GameObject.FindWithTag("Lives").GetComponent<TextMeshProUGUI>();
 
@@ -121,6 +136,7 @@ public class GameController : MonoBehaviour
         {
             GamePaused = true;
             GameObject.FindWithTag("LosePanel").transform.GetChild(0).gameObject.SetActive(true);
+            GameSessionLogger.instance.AmountOfLosses++;
         }
     }
 
@@ -132,6 +148,7 @@ public class GameController : MonoBehaviour
         LevelTimer = 0;
         timerText = null;
         _livesText = null;
+        _levelCompleted = false;
     }
 
     private TextMeshProUGUI timerText;
@@ -150,5 +167,13 @@ public class GameController : MonoBehaviour
 
         // Atualiza o texto da UI com o formato MM:SS
         timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+    }
+
+    public void UpdateSessionLogger()
+    {
+        GameSessionLogger.instance.LogLevelData(_lastLevelname, LevelTimer, GameSessionLogger.instance.LivesLost, GameSessionLogger.instance.HintsUsed, _levelCompleted, GameSessionLogger.instance.AmountOfLosses);
+        GameSessionLogger.instance.LivesLost = 0;
+        GameSessionLogger.instance.HintsUsed = 0;
+        GameSessionLogger.instance.AmountOfLosses = 0;
     }
 }
