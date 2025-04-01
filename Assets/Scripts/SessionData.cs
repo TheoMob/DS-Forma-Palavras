@@ -1,7 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using static UnityEngine.UIElements.UxmlAttributeDescription;
+using System.Xml.Linq;
 
 
 public class SessionData : MonoBehaviour
@@ -9,45 +12,63 @@ public class SessionData : MonoBehaviour
 
 
     public static SessionData instance;
-    public float numErros = 0;
-    public float numAcertos = 0;
-    public float numDrags = 0;
-    public float dragTimer = 0;
-    public float totalDragTime = 0;
-    public float avgDragTime = 0;
     public string filePath = "";
-    public bool isDraging = false;
-    private string head = "ID, Data, Duração da Sessão, Profissional Responsável, ID do Paciente, Nome do nível, Tempo gasto no nível, Erros, Dicas, Nivel finalizado, Derrotas, Comentario do Profissional";
+    public string id;
+    public float sessionTime;
+    public int lostLives = 0;
+    public int numClues = 0;
+    private string head = "ID, Data, Duração da Sessão, Profissional Responsável, ID do Paciente, Nome do nível,\n Tempo gasto no nível, Dicas Usadas, Nivel finalizado, Vidas Perdidas, Comentario do Profissional";
 
-    void Update()
+    public void ResetSessionData()
     {
-        if(isDraging){
-            dragTimer += Time.deltaTime;
-        }
+        this.lostLives = 0;
+        this.numClues = 0;
     }
 
-    public void DragTimeCount(float dragTimer){
-        totalDragTime = totalDragTime + dragTimer;
+    public void ClueAddCount()
+    {
+        this.numClues++;
+        return;
     }
 
-    private void saveData(string id, string date, float sessionTime, string nameResp, string paciID, int level,float spentTime, int  numErros, int numClues, int nivelEnd, int derrotas, string commentary){
+    public void Lifeloss()
+    {
+        this.lostLives++;
+        return;
+    }
+    
+    public void GetPath()
+    {
         string appPath = System.IO.Directory.GetCurrentDirectory();
-        filePath = appPath + "/Dados.csv";
-        if (new FileInfo(filePath).Length == 0){
-            using (StreamWriter writer = new StreamWriter(filePath, true)){
-                writer.WriteLine(head);
-            }
+        this.filePath = appPath + "/Dados.csv";
+        return;
+    }
+    public void CsvCheck()
+    {
+        GetPath();
+        StreamWriter writer = new StreamWriter("/Dados.csv", true);
+        if (new FileInfo("/Dados.csv").Length == 0)
+        {
+            writer.WriteLine("ID, Data, Duração da Sessão, Profissional Responsável, ID do Paciente, Nome do nível,\n Tempo gasto no nível, Dicas Usadas, Nivel finalizado, Vidas Perdidas, Comentario do Profissional");
         }
-        string data = ($"{id}, {date}, {sessionTime}, {nameResp}, {paciID}, {level}, {spentTime}, {numErros}, {numClues}, {nivelEnd}, {derrotas}, {commentary}");
+        writer.Close();
+        return;
+    }
+    public void saveData(float sessionTime, string nameResp, string paciID, int level, float spentTime, int nivelEnd, string commentary)
+    {
+        DateTime dt = DateTime.Now;
+        string date = dt.ToString("yyyyMMddHHmmss");
+        GetPath();
+        string data = ($"{this.id}, {date}, {sessionTime}, {nameResp}, {paciID}, {level}, {spentTime}, {this.numClues}, {nivelEnd}, {this.lostLives}, {commentary}");
         WriteToCSV(data);
     }
 
-    public void WriteToCSV(string data){        
-        using (StreamWriter writer = new StreamWriter(filePath, true)){
+    public void WriteToCSV(string data)
+    {
+       StreamWriter writer = new StreamWriter(this.filePath, true);
             writer.WriteLine(data);
-        }
-        
-        Debug.Log($"Dados salvos em: {filePath}");
+        writer.Close();
+        Debug.Log($"Dados salvos em: {this.filePath}");
 
     }
 }
