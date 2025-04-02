@@ -176,7 +176,7 @@ public class GameController : MonoBehaviour
 
     public void UpdateSessionLogger()
     {
-        GameSessionLogger.instance.LogLevelData(_lastLevelname, LevelTimer, GameSessionLogger.instance.LivesLost, GameSessionLogger.instance.HintsUsed, _levelCompleted, GameSessionLogger.instance.AmountOfLosses);
+        GameSessionLogger.instance.LogLevelData(_lastLevelname, (int)LevelTimer, GameSessionLogger.instance.LivesLost, GameSessionLogger.instance.HintsUsed, _levelCompleted, GameSessionLogger.instance.AmountOfLosses);
         GameSessionLogger.instance.LivesLost = 0;
         GameSessionLogger.instance.HintsUsed = 0;
         GameSessionLogger.instance.AmountOfLosses = 0;
