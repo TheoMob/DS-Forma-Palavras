@@ -97,5 +97,32 @@ public class GameController : MonoBehaviour
     public void ResetLevelVariables()
     {
 
+<<<<<<< Updated upstream
+=======
+    private TextMeshProUGUI timerText;
+    private void UpdateSessionTimer()
+    {
+        if (timerText == null)
+            timerText = GameObject.FindWithTag("SessionTimer").GetComponent<TextMeshProUGUI>();
+        
+        timerText.gameObject.SetActive(DisplayTimer);
+
+        if (!DisplayTimer)
+            return;
+
+        int minutes = Mathf.FloorToInt(LevelTimer / 60); // Obtém os minutos
+        int seconds = Mathf.FloorToInt(LevelTimer % 60); // Obtém os segundos
+
+        // Atualiza o texto da UI com o formato MM:SS
+        timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+    }
+
+    public void UpdateSessionLogger()
+    {
+        GameSessionLogger.instance.LogLevelData(_lastLevelname, (int)LevelTimer, GameSessionLogger.instance.LivesLost, GameSessionLogger.instance.HintsUsed, _levelCompleted, GameSessionLogger.instance.AmountOfLosses);
+        GameSessionLogger.instance.LivesLost = 0;
+        GameSessionLogger.instance.HintsUsed = 0;
+        GameSessionLogger.instance.AmountOfLosses = 0;
+>>>>>>> Stashed changes
     }
 }
