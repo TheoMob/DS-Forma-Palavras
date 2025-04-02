@@ -65,12 +65,12 @@ public class GameSessionLogger : MonoBehaviour
     }
     #endif
 
-    public void LogLevelData(string levelName, float timeSpent, int livesLost, int hintsUsed, bool levelCompleted, int amountOfLoses)
+    public void LogLevelData(string levelName, int timeSpent, int livesLost, int hintsUsed, bool levelCompleted, int amountOfLoses)
     {
         Debug.Log("Atualizando LogLevelData");
 
         string levelData = $"( Nível: {levelName} | Tempo: {timeSpent}s | Vidas Perdidas: {livesLost} | Dicas Usadas: {hintsUsed} | " +
-                        $"Finalizado: {(levelCompleted ? "Sim" : "Não")} | Derrotas: {amountOfLoses} )";
+                        $"Finalizado: {(levelCompleted ? "Sim" : "Não")} | Derrotas: {amountOfLoses} \n ,,,,,,,)";
 
         levelDataList.Add(levelData);
     }
