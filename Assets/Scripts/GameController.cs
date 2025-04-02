@@ -1,14 +1,27 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
     public static GameController instance;
-    public SessionData Session = new SessionData();
     public int LettersCount = 0;
     public int WordsCount = 0;
+
+    [Header("Variaveis de sessão")]
+    public bool DisplayTimer = true;
+    public float SessionTimer = 0;
+    public float LevelTimer = 0;
     public int AmountOfLives = 3;
     public bool GamePaused = false;
+
+    public bool IsInLevel = false;
+
+    private bool _levelCompleted = false;
+
+    private string _lastLevelname;
+
+    public bool FirstTimeOnMainMenu = true;
 
     
     [Header("Sons")]
@@ -42,13 +55,39 @@ public class GameController : MonoBehaviour
             string currentSceneName = SceneManager.GetActiveScene().name;
             SceneManager.LoadScene(currentSceneName);
         }
+
+        if (GamePaused)
+            return;
+        
+        SessionTimer += Time.deltaTime;
+
+        if (IsInLevel)
+        {
+            LevelTimer += Time.deltaTime;
+            UpdateSessionTimer();
+        }
+
     }
 
     public void OnSceneLoaded(Scene scene, LoadSceneMode sceneMode)
     {
+        bool returningToMenu = IsInLevel && !scene.name.Contains("Level"); // isso testa se o jogador ta indo pro menu principal
+
+        if (returningToMenu)
+        {
+            UpdateSessionLogger();
+            FirstTimeOnMainMenu = false;
+        }
+
+        IsInLevel = scene.name.Contains("Level");
+        _lastLevelname = scene.name;
+        GamePaused = false;
+
         if (!scene.name.Contains("Level")) // se não tem level no nome da cena, não é um level, logo não precisa do hint manager
             return;
 
+        HintManager.instance.GetLetterBlocksAndContainers();
+        ResetLevelVariables();
         GetAmountOfLetters();
 
         SoundFXManager.instance.PlaySoundFXClip(_LevelMusic, transform.position, 1f, true);
@@ -70,9 +109,11 @@ public class GameController : MonoBehaviour
     public void OnMatchLetter()
     {
         LettersCount--;
-        //Session.CsvCheck();
+
         if (LettersCount <= 0)
         {
+            _levelCompleted = true;
+
             GameObject.FindWithTag("WinPanel").transform.GetChild(0).gameObject.SetActive(true);
             SoundFXManager.instance.PlaySoundFXClip(_VictorySound, transform.position, 1f, false);
 
@@ -82,23 +123,39 @@ public class GameController : MonoBehaviour
         }
     }
 
+    private TextMeshProUGUI _livesText;
+
     public void OnMissLetter(bool letterContainerErrado)
     {
         // aqui da pra capturar a quantidade de erros e quantidade de vezes que a letra foi solta
         AmountOfLives--;
 
+        GameSessionLogger.instance.LivesLost++;
+
+        if (_livesText == null)
+            _livesText = GameObject.FindWithTag("Lives").GetComponent<TextMeshProUGUI>();
+
+        _livesText.text = AmountOfLives + "/3";
+
         if (AmountOfLives <= 0)
         {
             GamePaused = true;
             GameObject.FindWithTag("LosePanel").transform.GetChild(0).gameObject.SetActive(true);
+            GameSessionLogger.instance.AmountOfLosses++;
         }
     }
 
     public void ResetLevelVariables()
     {
+        AmountOfLives = 3;
+        WordsCount = 0;
+        LettersCount = 0;
+        LevelTimer = 0;
+        timerText = null;
+        _livesText = null;
+        _levelCompleted = false;
+    }
 
-<<<<<<< Updated upstream
-=======
     private TextMeshProUGUI timerText;
     private void UpdateSessionTimer()
     {
@@ -123,6 +180,5 @@ public class GameController : MonoBehaviour
         GameSessionLogger.instance.LivesLost = 0;
         GameSessionLogger.instance.HintsUsed = 0;
         GameSessionLogger.instance.AmountOfLosses = 0;
->>>>>>> Stashed changes
     }
 }
