@@ -88,7 +88,7 @@ public class GameSessionLogger : MonoBehaviour
         string levelsData = string.Join(" ; ", levelDataList);
 
         // Cria a linha da sessão
-        string sessionData = $"{SessionId}, {BeginTimeStamp}, {EndTimeStamp}, {SessionDuration}, {AdminID}, {PatientID}, {CompletedLevels}, \"{levelsData}\", {Commentary}\n";
+        string sessionData = $"{SessionId}, {BeginTimeStamp}, {EndTimeStamp}, {SessionDuration} segundos, {AdminID}, {PatientID}, {CompletedLevels} niveis completos, \"{levelsData}\", {Commentary}\n";
 
         // Salva no arquivo CSV
         File.AppendAllText(filePath, sessionData);
