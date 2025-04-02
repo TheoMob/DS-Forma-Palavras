@@ -25,13 +25,13 @@ public class GameSessionLogger : MonoBehaviour
     public int HintsUsed = 0;
     public int AmountOfLosses = 0;
     public string Commentary;
-    
+
     void Awake()
     {
         if (instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(this);   
+            DontDestroyOnLoad(this);
         }
         else
             Destroy(gameObject);
@@ -44,11 +44,11 @@ public class GameSessionLogger : MonoBehaviour
         // Define o caminho do arquivo CSV
         filePath = Path.Combine(Application.persistentDataPath, "session_log.csv");
 
-        // Se o arquivo não existir, cria com cabeçalhos
+        // Se o arquivo não existir, cria com cabeçalhos organizados
         if (!File.Exists(filePath))
         {
-            File.WriteAllText(filePath, "ID_Sessao, Inicio, Fim, Duracao_Sessao, ID_Administrador, ID_Aluno, Niveis_Completados, Dados_Niveis\n");
-
+            File.WriteAllText(filePath, "ID_Sessao, Inicio, Fim, Duracao_Sessao, ID_Administrador, ID_Aluno, " +
+                                        "Nivel, Tempo_Gasto, Vidas_Perdidas, Dicas_Usadas, Finalizado, Derrotas\n");
         }
 
         // Inicia a sessão
@@ -70,32 +70,34 @@ public class GameSessionLogger : MonoBehaviour
     {
         Debug.Log("Atualizando LogLevelData");
 
-        string levelData = $"Nível: {levelName} | " +
-                        $"Tempo: {timeSpent}s | " +
-                        $"Vidas Perdidas: {livesLost} | " +
-                        $"Dicas Usadas: {hintsUsed} | " +
-                        $"Finalizado: {(levelCompleted ? "Sim" : "Não")} | " +
-                        $"Derrotas: {amountOfLoses}\n\n";
+        // Cada entrada é uma linha separada com as colunas já organizadas
+        string levelData = $"{SessionId}, {BeginTimeStamp}, {EndTimeStamp}, {SessionDuration}, {AdminID}, {PatientID}, " +
+                           $"{levelName}, {timeSpent}, {livesLost}, {hintsUsed}, {(levelCompleted ? "Sim" : "Não")}, {amountOfLoses}";
 
         levelDataList.Add(levelData);
     }
 
     public void OnApplicationQuit()
     {
-        if (SceneManager.GetActiveScene().name.Contains("Level")) // significa que tava no meio de um level
+        if (SceneManager.GetActiveScene().name.Contains("Level")) // Se estiver em um nível ao sair, atualiza o logger
             GameController.instance.UpdateSessionLogger();
 
+        // Atualiza o tempo de término e a duração da sessão antes de salvar os dados
         EndTimeStamp = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
         SessionDuration = (float)(System.DateTime.Parse(EndTimeStamp) - System.DateTime.Parse(BeginTimeStamp)).TotalSeconds;
 
-        // Junta todas as informações dos níveis em uma única string
-        string levelsData = string.Join(" ; ", levelDataList);
+        // Atualiza os dados da sessão antes de salvar
+        for (int i = 0; i < levelDataList.Count; i++)
+        {
+            string[] splitData = levelDataList[i].Split(',');
+            levelDataList[i] = $"{SessionId}, {BeginTimeStamp}, {EndTimeStamp}, {SessionDuration}, {AdminID}, {PatientID}, " +
+                            $"{splitData[6]}, {splitData[7]}, {splitData[8]}, {splitData[9]}, {splitData[10]}, {splitData[11]}";
+        }
 
-        // Cria a linha da sessão
-        string sessionData = $"{SessionId}, {BeginTimeStamp}, {EndTimeStamp}, {SessionDuration} segundos, {AdminID}, {PatientID}, {CompletedLevels} niveis completos, \"{levelsData}\n";
+        // Salva os dados corrigidos no CSV
+        File.AppendAllLines(filePath, levelDataList);
 
-        // Salva no arquivo CSV
-        File.AppendAllText(filePath, sessionData);
+        Debug.Log($"Dados da sessão salvos em: {filePath}");
     }
 
     public string GetFilePath()

@@ -21,7 +21,7 @@ public class InGameMenu : MonoBehaviour
 
     public void ExitApp()
     {
-        GameSessionLogger.instance.OnApplicationQuit();
+        //GameSessionLogger.instance.OnApplicationQuit();
         // Fecha o aplicativo no Android
         Application.Quit();
     }
