@@ -67,9 +67,11 @@ public class LetterBlock : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
             _rect.localPosition = _initialPosition;
 
             if (_wronglyMatched)
+            {
                 SoundFXManager.instance.PlaySoundFXClip(_wrongLetterSound, transform.position, 1f, false);
+                GameController.instance.OnMissLetter(_wronglyMatched); // isso serve pra cuidar das vidas e também pra expor a quantidade de erros
+            }
                 
-            GameController.instance.OnMissLetter(_wronglyMatched); // isso serve pra cuidar das vidas e também pra expor a quantidade de erros
             return;
         }
         

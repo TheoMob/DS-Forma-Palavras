@@ -18,7 +18,7 @@ public class GameSessionLogger : MonoBehaviour
     public float SessionDuration;
     public string AdminID;
     public string PatientID;
-    public int CompletedLevels;
+    public int CompletedLevels = 0;
 
     [Header("Variáveis qualitativas")]
     public int LivesLost = 0;
@@ -47,7 +47,8 @@ public class GameSessionLogger : MonoBehaviour
         // Se o arquivo não existir, cria com cabeçalhos
         if (!File.Exists(filePath))
         {
-            File.WriteAllText(filePath, "SessionID, BeginTime, EndTime, SessionDuration, AdminID, PacientID, CompletedLevels, LevelsData, Commentary\n");
+            File.WriteAllText(filePath, "ID_Sessao, Inicio, Fim, Duracao_Sessao, ID_Administrador, ID_Aluno, Niveis_Completados, Dados_Niveis\n");
+
         }
 
         // Inicia a sessão
@@ -69,8 +70,12 @@ public class GameSessionLogger : MonoBehaviour
     {
         Debug.Log("Atualizando LogLevelData");
 
-        string levelData = $"( Nível: {levelName} | Tempo: {timeSpent}s | Vidas Perdidas: {livesLost} | Dicas Usadas: {hintsUsed} | " +
-                        $"Finalizado: {(levelCompleted ? "Sim" : "Não")} | Derrotas: {amountOfLoses} \n ,,,,,,,)";
+        string levelData = $"Nível: {levelName} | " +
+                        $"Tempo: {timeSpent}s | " +
+                        $"Vidas Perdidas: {livesLost} | " +
+                        $"Dicas Usadas: {hintsUsed} | " +
+                        $"Finalizado: {(levelCompleted ? "Sim" : "Não")} | " +
+                        $"Derrotas: {amountOfLoses}\n\n";
 
         levelDataList.Add(levelData);
     }
@@ -82,13 +87,12 @@ public class GameSessionLogger : MonoBehaviour
 
         EndTimeStamp = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
         SessionDuration = (float)(System.DateTime.Parse(EndTimeStamp) - System.DateTime.Parse(BeginTimeStamp)).TotalSeconds;
-        CompletedLevels = levelDataList.Count;
 
         // Junta todas as informações dos níveis em uma única string
         string levelsData = string.Join(" ; ", levelDataList);
 
         // Cria a linha da sessão
-        string sessionData = $"{SessionId}, {BeginTimeStamp}, {EndTimeStamp}, {SessionDuration} segundos, {AdminID}, {PatientID}, {CompletedLevels} niveis completos, \"{levelsData}\", {Commentary}\n";
+        string sessionData = $"{SessionId}, {BeginTimeStamp}, {EndTimeStamp}, {SessionDuration} segundos, {AdminID}, {PatientID}, {CompletedLevels} niveis completos, \"{levelsData}\n";
 
         // Salva no arquivo CSV
         File.AppendAllText(filePath, sessionData);

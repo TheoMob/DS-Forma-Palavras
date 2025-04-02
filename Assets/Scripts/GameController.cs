@@ -113,6 +113,7 @@ public class GameController : MonoBehaviour
         if (LettersCount <= 0)
         {
             _levelCompleted = true;
+            GameSessionLogger.instance.CompletedLevels++;
 
             GameObject.FindWithTag("WinPanel").transform.GetChild(0).gameObject.SetActive(true);
             SoundFXManager.instance.PlaySoundFXClip(_VictorySound, transform.position, 1f, false);
